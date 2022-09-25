@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CamFollow : MonoBehaviour
+{
+    public GameObject thing2Follow;
+    private Vector3 offsetCam = new Vector3(0, 2.5f, 0.5f);
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        transform.position = thing2Follow.transform.position + offsetCam;
+    }
+}
