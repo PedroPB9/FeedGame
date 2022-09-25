@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    private float forwardSpeed = 12.0f;
+    private float slideSpeed = 18.0f;
+    private float horizontalInput;
+    private float verticalInput;
+
+    private float xRange = 23.0f;
+    private float zBack = -1.8f;
+    private float zUp = 16f;
+
+    public GameObject projectilePrefab;
+
+    public Camera mainCam;
+    public Camera secCam;
+
+    //public float timeLimit;
+    //public float pressRate = 0.25f;
+
+    public Transform projectileSpawn;
+    
+    void Start()
+    {
+        mainCam.enabled = true;
+        secCam.enabled = false;
+
+    }
+
+    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            mainCam.enabled = !mainCam.enabled;
+            secCam.enabled = !secCam.enabled;
+
+        }
+
+
+        if (transform.position.x <= -xRange)
+        {
+            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
+        }
+
+        if (transform.position.x > xRange)
+        {
+            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+        }
+
+
+        if (transform.position.z < zBack)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, zBack);
+        }
+
+        if (transform.position.z > zUp)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, zUp);
+        }
+
+
+        horizontalInput = slideSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
+        transform.Translate(horizontalInput, 0, 0);
+        verticalInput = Input.GetAxis("Vertical");
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime * verticalInput);
+
+
+        if (Input.GetKeyDown(KeyCode.Space))//&& Time.time > timeLimit
+        {
+            //timeLimit = Time.time + pressRate;
+
+            //Launching the prefab projectile from the player
+            Instantiate(projectilePrefab, projectileSpawn.position, projectilePrefab.transform.rotation);
+        }
+    }
+}
