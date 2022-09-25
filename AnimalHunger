@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class AnimalHunger : MonoBehaviour
+{
+    public Slider hungerSlider;
+    public int amountToBeFed;
+    public int currentFedAmount = 0;
+    
+    private Status managerVariable;
+    // Start is called before the first frame update
+    void Start()
+    {
+        hungerSlider.maxValue = amountToBeFed;
+        hungerSlider.value = 0;
+        hungerSlider.fillRect.gameObject.SetActive(false);
+
+        managerVariable = GameObject.Find("StatusManager").GetComponent<Status>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+
+    public void FeedAnimal(int pizza)
+    { // When called, the first thing is to update the current amount of hunger.
+        currentFedAmount += pizza;
+    // Afterwards, activate the fill, because if it's called, the animal received food.
+        hungerSlider.fillRect.gameObject.SetActive(true);
+    // The slider will be filled according to the current amount of food that it was given.    
+        hungerSlider.value = currentFedAmount;
+
+        if (currentFedAmount >= amountToBeFed)
+        {
+        // If the current fed amount reached the animal's limit, the player scores according to the animal's capacity.
+            managerVariable.AddScore(amountToBeFed);
+            Destroy(gameObject, 0.1f);
+        }
+    }
+}
