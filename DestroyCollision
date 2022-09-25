@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DetectCollision : MonoBehaviour
+{   //Will store a referrecing instance of the class Status
+    private Status managerVariable;
+    public int live = 4;
+    // Start is called before the first frame update
+    void Start()
+    {
+        managerVariable = GameObject.Find("StatusManager").GetComponent<Status>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            managerVariable.Addlives(-1);
+
+        }
+        else if (other.CompareTag("Animal") && gameObject.tag == "Food")
+        {
+        // When a pizza collides with an animal(other), I get the instantiation of the class reference
+        // AnimalHunger (script), and from that, I call the method to register the score, destroy the animal, update the fill.    
+            other.GetComponent<AnimalHunger>().FeedAnimal(1);
+            Destroy(gameObject);
+            //Destroy(other.gameObject); It was already destroyed in A.Hunger
+            //managerVariable.AddScore(1); It was added in A.Hunger
+                
+        }
+        
+    }   
+}
